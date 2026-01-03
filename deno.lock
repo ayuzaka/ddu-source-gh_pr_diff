@@ -1,0 +1,53 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@core/unknownutil@^4.3.0": "4.3.0",
+    "jsr:@denops/core@7.0": "7.0.1",
+    "jsr:@denops/core@8": "8.0.1",
+    "jsr:@denops/std@8.0": "8.0.0",
+    "jsr:@shougo/ddu-vim@11.1": "11.1.0",
+    "jsr:@std/assert@1.0": "1.0.14",
+    "jsr:@std/internal@^1.0.10": "1.0.10"
+  },
+  "jsr": {
+    "@core/unknownutil@4.3.0": {
+      "integrity": "538a3687ffa81028e91d148818047df219663d0da671d906cecd165581ae55cc"
+    },
+    "@denops/core@7.0.1": {
+      "integrity": "ede39eec60de6d5bf0fbc0337d3e420a9689cc48afea8c71752e6c0fb630bde0"
+    },
+    "@denops/core@8.0.1": {
+      "integrity": "699c70b07b2347febb96972c857fb8325ad8efa99936a0a8c0bb2be82a8b8f32"
+    },
+    "@denops/std@8.0.0": {
+      "integrity": "1a3e4ba4fab7d88da0de1c5330b6b87b5c959037d55542edb18c51cda054caa2",
+      "dependencies": [
+        "jsr:@denops/core@8"
+      ]
+    },
+    "@shougo/ddu-vim@11.1.0": {
+      "integrity": "839d7c51a78ece975e034bacda2bf61a7e334dbf95d1ca2a838630933b0175e6",
+      "dependencies": [
+        "jsr:@denops/std"
+      ]
+    },
+    "@std/assert@1.0.14": {
+      "integrity": "68d0d4a43b365abc927f45a9b85c639ea18a9fab96ad92281e493e4ed84abaa4",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/internal@1.0.10": {
+      "integrity": "e3be62ce42cab0e177c27698e5d9800122f67b766a0bea6ca4867886cbde8cf7"
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@core/unknownutil@^4.3.0",
+      "jsr:@denops/core@7.0",
+      "jsr:@denops/std@7.5",
+      "jsr:@shougo/ddu-vim@11.1",
+      "jsr:@std/assert@1.0"
+    ]
+  }
+}

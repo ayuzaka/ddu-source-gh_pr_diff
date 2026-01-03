@@ -1,0 +1,108 @@
+*ddu-source-gh_pr_diff.txt*	GitHub Pull Request diff source for ddu.vim
+
+Author: ayuzaka
+License: MIT
+
+CONTENTS					*ddu-source-gh_pr_diff-contents*
+
+Introduction		|ddu-source-gh_pr_diff-introduction|
+Requirements		|ddu-source-gh_pr_diff-requirements|
+Install			|ddu-source-gh_pr_diff-install|
+Examples		|ddu-source-gh_pr_diff-examples|
+Source			|ddu-source-gh_pr_diff|
+Kind			|ddu-kind-gh_pr_diff|
+Actions			|ddu-kind-gh_pr_diff-actions|
+
+==============================================================================
+INTRODUCTION				*ddu-source-gh_pr_diff-introduction*
+
+This source collects files changed in the current GitHub Pull Request.
+You can browse changed files and view diffs.
+
+==============================================================================
+REQUIREMENTS				*ddu-source-gh_pr_diff-requirements*
+
+- denops.vim (https://github.com/vim-denops/denops.vim)
+- ddu.vim (https://github.com/Shougo/ddu.vim)
+- ddu-ui-ff or other ddu UI
+- gh CLI (https://cli.github.com/)
+  - Must be authenticated (`gh auth login`)
+- Git repository with a Pull Request branch checked out
+
+==============================================================================
+INSTALL					*ddu-source-gh_pr_diff-install*
+
+Use your favorite plugin manager.
+
+lazy.nvim: >lua
+	{
+	  "ayuzaka/ddu-source-gh_pr_diff",
+	  dependencies = {
+	    "vim-denops/denops.vim",
+	    "Shougo/ddu.vim",
+	  },
+	}
+<
+
+vim-plug: >vim
+	Plug 'vim-denops/denops.vim'
+	Plug 'Shougo/ddu.vim'
+	Plug 'ayuzaka/ddu-source-gh_pr_diff'
+<
+
+==============================================================================
+EXAMPLES				*ddu-source-gh_pr_diff-examples*
+
+>lua
+	vim.fn["ddu#custom#patch_global"]({
+	  kindOptions = {
+	    gh_pr_diff = {
+	      defaultAction = "diff",
+	    },
+	  },
+	})
+<
+
+>vim
+	call ddu#custom#patch_global(#{
+	  \   kindOptions: #{
+	  \     gh_pr_diff: #{
+	  \       defaultAction: 'diff',
+	  \     },
+	  \   },
+	  \ })
+<
+
+==============================================================================
+SOURCE					*ddu-source-gh_pr_diff*
+
+gh_pr_diff
+	Collects files changed in the current Pull Request using
+	`gh pr diff --name-only`.
+
+	Source params: None
+
+==============================================================================
+KIND					*ddu-kind-gh_pr_diff*
+
+gh_pr_diff
+	Kind for Pull Request diff files.
+
+	Kind params: None
+
+==============================================================================
+ACTIONS					*ddu-kind-gh_pr_diff-actions*
+
+					*ddu-kind-gh_pr_diff-action-open*
+open
+	Open the file in the current window.
+
+					*ddu-kind-gh_pr_diff-action-diff*
+diff
+	Show the diff for the selected file.
+	Opens the current file and the base branch version side by side
+	using Vim's built-in diff mode (|:diffthis|).
+	You can edit the current file directly.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:

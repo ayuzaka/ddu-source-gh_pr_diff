@@ -1,0 +1,13 @@
+{
+  "tasks": {
+    "test": "deno test denops/gh_pr_diff/",
+    "check": "deno check --config denops/@ddu-sources/gh_pr_diff/deno.json denops/@ddu-sources/gh_pr_diff/main.ts && deno check --config denops/@ddu-kinds/gh_pr_diff/deno.json denops/@ddu-kinds/gh_pr_diff/main.ts && deno check denops/gh_pr_diff/"
+  },
+  "imports": {
+    "@denops/core": "jsr:@denops/core@~7.0.0",
+    "@denops/std/function": "jsr:@denops/std@~7.5.0/function",
+    "@shougo/ddu-vim": "jsr:@shougo/ddu-vim@~11.1.0",
+    "@std/assert": "jsr:@std/assert@~1.0.0",
+    "@core/unknownutil": "jsr:@core/unknownutil@^4.3.0"
+  }
+}
