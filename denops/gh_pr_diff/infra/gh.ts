@@ -21,3 +21,23 @@ export const runGhJson = async <T>(
 
   return parseJson(output, predicate, errorMessage);
 };
+
+export const runGhGraphQL = async (
+  query: string,
+  variables: Record<string, string> = {},
+): Promise<void> => {
+  const args = ["api", "graphql", "-f", `query=${query}`];
+  for (const [key, value] of Object.entries(variables)) {
+    args.push("-f", `${key}=${value}`);
+  }
+  await runGh(args);
+};
+
+export const runGhGraphQLJson = async <T>(
+  query: string,
+  predicate: Predicate<T>,
+  errorMessage: string,
+): Promise<T> => {
+  const output = await runGh(["api", "graphql", "-f", `query=${query}`]);
+  return parseJson(output, predicate, errorMessage);
+};

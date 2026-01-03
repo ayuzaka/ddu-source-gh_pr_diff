@@ -104,5 +104,12 @@ diff
 	using Vim's built-in diff mode (|:diffthis|).
 	You can edit the current file directly.
 
+				*ddu-kind-gh_pr_diff-action-markAsViewed*
+markAsViewed
+	Mark the selected file(s) as viewed on GitHub.
+	This is equivalent to clicking the "Viewed" checkbox in the
+	GitHub Pull Request Files Changed tab.
+	Multiple files can be marked at once when selected.
+
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:
