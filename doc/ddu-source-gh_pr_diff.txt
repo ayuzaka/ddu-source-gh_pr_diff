@@ -78,7 +78,11 @@ SOURCE					*ddu-source-gh_pr_diff*
 
 gh_pr_diff
 	Collects files changed in the current Pull Request using
-	`gh pr diff --name-only`.
+	GitHub GraphQL API.
+
+	The PR number is detected automatically from:
+	1. Current branch (via `gh pr view`)
+	2. HEAD commit matching an open PR's head
 
 	Source params: None
 

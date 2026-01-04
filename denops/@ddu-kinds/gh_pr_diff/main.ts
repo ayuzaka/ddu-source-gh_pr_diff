@@ -2,30 +2,17 @@ import type { Denops } from "@denops/core";
 import * as fn from "@denops/std/function";
 import { BaseKind } from "@shougo/ddu-vim/kind";
 import { type ActionArguments, ActionFlags } from "@shougo/ddu-vim/types";
-import { is, type PredicateType } from "@core/unknownutil";
-import { runGhGraphQL, runGhJson } from "../../gh_pr_diff/infra/gh.ts";
+import { is } from "@core/unknownutil";
+import { runGhGraphQL } from "../../gh_pr_diff/infra/gh.ts";
 import { runGitShow } from "../../gh_pr_diff/infra/git.ts";
 
 type Params = Record<never, never>;
 
 const isActionData = is.ObjectOf({
   path: is.String,
-});
-
-const isGhPrView = is.ObjectOf({
-  id: is.String,
-  number: is.Number,
+  prId: is.String,
   baseRefName: is.String,
 });
-type GhPrView = PredicateType<typeof isGhPrView>;
-
-const getPullRequest = async (): Promise<GhPrView> => {
-  return await runGhJson(
-    ["pr", "view", "--json", "id,number,baseRefName"],
-    isGhPrView,
-    "Invalid gh pr view response",
-  );
-};
 
 const markFileAsViewed = async (pullRequestId: string, path: string): Promise<void> => {
   const query = `
@@ -40,9 +27,11 @@ const markFileAsViewed = async (pullRequestId: string, path: string): Promise<vo
   await runGhGraphQL(query, { pullRequestId, path });
 };
 
-const openDiff = async (denops: Denops, path: string): Promise<void> => {
-  const { baseRefName } = await getPullRequest();
-
+const openDiff = async (
+  denops: Denops,
+  path: string,
+  baseRefName: string,
+): Promise<void> => {
   const baseLines = await runGitShow(baseRefName, path);
   const escaped = await fn.fnameescape(denops, path);
 
@@ -82,7 +71,11 @@ export class Kind extends BaseKind<Params> {
         return ActionFlags.None;
       }
 
-      await openDiff(args.denops, item.action.path);
+      await openDiff(
+        args.denops,
+        item.action.path,
+        item.action.baseRefName,
+      );
 
       return ActionFlags.None;
     },
@@ -90,12 +83,11 @@ export class Kind extends BaseKind<Params> {
     markAsViewed: async (
       args: ActionArguments<Params>,
     ): Promise<ActionFlags> => {
-      const { id } = await getPullRequest();
       for (const item of args.items) {
         if (!isActionData(item.action)) {
           continue;
         }
-        await markFileAsViewed(id, item.action.path);
+        await markFileAsViewed(item.action.prId, item.action.path);
       }
       return ActionFlags.RefreshItems;
     },
