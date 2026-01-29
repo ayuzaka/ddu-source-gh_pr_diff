@@ -57,7 +57,17 @@ EXAMPLES				*ddu-source-gh_pr_diff-examples*
 	vim.fn["ddu#custom#patch_global"]({
 	  kindOptions = {
 	    gh_pr_diff = {
-	      defaultAction = "diff",
+	      defaultAction = "open",
+	    },
+	  },
+	})
+
+	vim.fn["ddu#custom#patch_local"]("ff", {
+	  uiParams = {
+	    ff = {
+	      mappings = {
+	        p = "itemAction:diff",
+	      },
 	    },
 	  },
 	})
@@ -67,7 +77,17 @@ EXAMPLES				*ddu-source-gh_pr_diff-examples*
 	call ddu#custom#patch_global(#{
 	  \   kindOptions: #{
 	  \     gh_pr_diff: #{
-	  \       defaultAction: 'diff',
+	  \       defaultAction: 'open',
+	  \     },
+	  \   },
+	  \ })
+
+	call ddu#custom#patch_local('ff', #{
+	  \   uiParams: #{
+	  \     ff: #{
+	  \       mappings: #{
+	  \         p: 'itemAction:diff',
+	  \       },
 	  \     },
 	  \   },
 	  \ })

@@ -15,7 +15,17 @@ A ddu.vim source that lists files changed in the current GitHub Pull Request.
 vim.fn["ddu#custom#patch_global"]({
   kindOptions = {
     gh_pr_diff = {
-      defaultAction = "diff",
+      defaultAction = "open",
+    },
+  },
+})
+
+vim.fn["ddu#custom#patch_local"]("ff", {
+  uiParams = {
+    ff = {
+      mappings = {
+        p = "itemAction:diff",
+      },
     },
   },
 })
@@ -25,7 +35,17 @@ vim.fn["ddu#custom#patch_global"]({
 call ddu#custom#patch_global(#{
   \   kindOptions: #{
   \     gh_pr_diff: #{
-  \       defaultAction: 'diff',
+  \       defaultAction: 'open',
+  \     },
+  \   },
+  \ })
+
+call ddu#custom#patch_local('ff', #{
+  \   uiParams: #{
+  \     ff: #{
+  \       mappings: #{
+  \         p: 'itemAction:diff',
+  \       },
   \     },
   \   },
   \ })
