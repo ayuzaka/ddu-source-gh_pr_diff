@@ -1,12 +1,10 @@
 import type { Denops } from "@denops/core";
 import * as fn from "@denops/std/function";
-import { BaseKind } from "@shougo/ddu-vim/kind";
+import { Kind as FileKind } from "@shougo/ddu-kind-file";
 import { type ActionArguments, ActionFlags } from "@shougo/ddu-vim/types";
 import { is } from "@core/unknownutil";
 import { runGhGraphQL } from "../../gh_pr_diff/infra/gh.ts";
 import { runGitShow } from "../../gh_pr_diff/infra/git.ts";
-
-type Params = Record<never, never>;
 
 const isActionData = is.ObjectOf({
   path: is.String,
@@ -49,49 +47,40 @@ const openDiff = async (
   await denops.cmd("diffthis");
 };
 
-export class Kind extends BaseKind<Params> {
-  actions = {
-    open: async (
-      args: ActionArguments<Params>,
-    ): Promise<ActionFlags> => {
-      const item = args.items[0];
-      if (!item || !isActionData(item.action)) {
-        return ActionFlags.None;
-      }
-      const escaped = await fn.fnameescape(args.denops, item.action.path);
-      await args.denops.cmd(`edit ${escaped}`);
-      return ActionFlags.None;
-    },
+export class Kind extends FileKind {
+  constructor() {
+    super();
+    this.actions = {
+      ...this.actions,
 
-    diff: async (
-      args: ActionArguments<Params>,
-    ): Promise<ActionFlags> => {
-      const item = args.items[0];
-      if (!item || !isActionData(item.action)) {
-        return ActionFlags.None;
-      }
-
-      await openDiff(
-        args.denops,
-        item.action.path,
-        item.action.baseRefName,
-      );
-
-      return ActionFlags.None;
-    },
-
-    markAsViewed: async (
-      args: ActionArguments<Params>,
-    ): Promise<ActionFlags> => {
-      for (const item of args.items) {
-        if (!isActionData(item.action)) {
-          continue;
+      diff: async (
+        args: ActionArguments<Record<string, unknown>>,
+      ): Promise<ActionFlags> => {
+        const item = args.items[0];
+        if (!item || !isActionData(item.action)) {
+          return ActionFlags.None;
         }
-        await markFileAsViewed(item.action.prId, item.action.path);
-      }
-      return ActionFlags.RefreshItems;
-    },
-  };
 
-  params = (): Params => ({});
+        await openDiff(
+          args.denops,
+          item.action.path,
+          item.action.baseRefName,
+        );
+
+        return ActionFlags.None;
+      },
+
+      markAsViewed: async (
+        args: ActionArguments<Record<string, unknown>>,
+      ): Promise<ActionFlags> => {
+        for (const item of args.items) {
+          if (!isActionData(item.action)) {
+            continue;
+          }
+          await markFileAsViewed(item.action.prId, item.action.path);
+        }
+        return ActionFlags.RefreshItems;
+      },
+    };
+  }
 }
