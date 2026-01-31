@@ -6,8 +6,6 @@ import { is } from "@core/unknownutil";
 import { runGhGraphQL } from "../../gh_pr_diff/infra/gh.ts";
 import { runGitShow } from "../../gh_pr_diff/infra/git.ts";
 
-type Params = Record<never, never>;
-
 const isActionData = is.ObjectOf({
   path: is.String,
   prId: is.String,
@@ -56,7 +54,7 @@ export class Kind extends FileKind {
       ...this.actions,
 
       diff: async (
-        args: ActionArguments<Params>,
+        args: ActionArguments<Record<string, unknown>>,
       ): Promise<ActionFlags> => {
         const item = args.items[0];
         if (!item || !isActionData(item.action)) {
@@ -73,7 +71,7 @@ export class Kind extends FileKind {
       },
 
       markAsViewed: async (
-        args: ActionArguments<Params>,
+        args: ActionArguments<Record<string, unknown>>,
       ): Promise<ActionFlags> => {
         for (const item of args.items) {
           if (!isActionData(item.action)) {
@@ -85,6 +83,4 @@ export class Kind extends FileKind {
       },
     };
   }
-
-  override params = (): Params => ({});
 }
